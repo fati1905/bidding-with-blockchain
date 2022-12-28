@@ -1,91 +1,146 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Person {
 
     private String fname;//first name
     private String lname; //last name
     private int age;//The age
-    private double montant;
+    private double money; //Money
+    ArrayList<Product> myProducts; //List of owned products
 
-    public Person() {
-        Scanner sc  = new Scanner(System.in);
-
-        System.out.println("Enter your first name : ");
-        while(true){
-            try {
-                this.fname = sc.nextLine();
-            }catch (InputMismatchException ex){
-                System.out.println("Format not valid : "+ex.getMessage());
-                continue;
-            }
-            break;
-        }
-
-        System.out.println("Enter your last name : ");
-        while(true){
-            try {
-                this.lname = sc.nextLine();
-            }catch (InputMismatchException ex){
-                System.out.println("Format not valid : "+ex.getMessage());
-                continue;
-            }
-            break;
-        }
-
-        System.out.println("Enter your age : ");
-        while(true){
-            try {
-                this.age = sc.nextInt();
-            }catch (InputMismatchException ex){
-                System.out.println("Format not valid : "+ex.getMessage());
-                continue;
-            }
-            break;
-        }
-
-        //Montant
-        System.out.println("Enter your bank resources : ");
-        while(true){
-            try {
-                this.montant = sc.nextDouble();
-            }catch (InputMismatchException ex){
-                System.out.println("Format not valid : "+ex.getMessage());
-                continue;
-            }
-            break;
+    //Méthode pour "clear" l'écran
+    public static void clearScreen()
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            System.out.println("");
         }
     }
 
-    public String getFname() {
+    //Constructeur
+    public Person()
+    {
+        //Pour scanner les saisies de l'utilisateur
+        Scanner sc  = new Scanner(System.in);
+
+        //Prénom
+        while(true)
+        {
+            try
+            {
+                System.out.print("Enter your first name : ");
+                this.fname = sc.nextLine();
+                break;
+            }
+            
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+
+        //Nom
+        while(true)
+        {
+            try
+            {
+                System.out.print("Enter your last name : ");
+                this.lname = sc.nextLine();
+                break;
+            }
+            
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+
+        //Age
+        while(true)
+        {
+            try
+            {
+                System.out.print("Enter your age : ");
+                this.age = sc.nextInt();
+                break;
+            }
+            
+            catch(InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+
+        //Money
+        while(true)
+        {
+            try
+            {
+                System.out.print("Enter your bank resources : ");
+                this.money = sc.nextDouble();
+                break;
+
+            }
+            
+            catch(InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+
+        //Object list
+        myProducts = new ArrayList<Product>();
+    }
+
+    //Getters
+    public String getFname()
+    {
         return fname;
     }
 
-    public String getLname() {
+    public String getLname()
+    {
         return lname;
     }
 
-    public int getAge() {
+    public int getAge()
+    {
         return age;
     }
 
-    public double getMontant() {
-        return montant;
+    public double getMoney()
+    {
+        return money;
     }
 
-    public void setFname(String fname) {
+    //Setters
+    public void setFname(String fname)
+    {
         this.fname = fname;
     }
 
-    public void setLname(String lname) {
+    public void setLname(String lname)
+    {
         this.lname = lname;
     }
 
-    public void setAge(int age) {
+    public void setAge(int age)
+    {
         this.age = age;
     }
 
-    public void setMontant(double montant) {
-        this.montant = montant;
+    public void setMoney(double money)
+    {
+        this.money = money;
     }
 }

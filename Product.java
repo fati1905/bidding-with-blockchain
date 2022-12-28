@@ -1,32 +1,79 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
-public class Product {
+public class Product
+{
     String name;
     String description;
 
-    public Product() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter the products name : ");
-        this.name = sc.nextLine();
-
-        System.out.println("Enter the description of the product : ");
-        this.description = sc.nextLine();
+    //Méthode pour "clear" l'écran
+    public static void clearScreen()
+    {
+        for(int i = 0; i < 100; i++)
+        {
+            System.out.println("");
+        }
     }
 
-    public String getName() {
+    public Product()
+    {
+        //Scanner
+        Scanner sc = new Scanner(System.in);
+
+        //Name
+        while(true)
+        {
+            try
+            {
+                System.out.print("Product name : ");
+                name = sc.nextLine();
+                break;
+            }
+            
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+
+        //Description
+        while(true)
+        {
+            try
+            {
+                System.out.print("Product description : ");
+                description = sc.nextLine();
+                break;
+            }
+            
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
+    }
+
+    public String getName()
+    {
         return name;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 }

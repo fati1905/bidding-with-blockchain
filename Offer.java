@@ -1,25 +1,12 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-public class Offer {
+public class Offer
+{
     private double prixProp; //Le prix proposé
-    private Buyer buyer;
+    private Buyer buyer; //L'acheteur
 
-    public Offer(Buyer buyer) {
+    public Offer(Buyer buyer, double price)
+    {
         this.buyer = buyer;
-
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter your price offer : ");
-        while (true){
-           try {
-               this.prixProp = sc.nextDouble();
-           }catch (InputMismatchException ex){
-               System.out.println("Input is invalid : "+ex.getMessage());
-               continue;
-           }
-           break;
-        }
+        this.prixProp = price;
     }
 
     public double getPrixProp() {
