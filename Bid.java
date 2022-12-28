@@ -1,4 +1,3 @@
-import java.util.Calendar;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
@@ -16,9 +15,9 @@ public class Bid
     //Starting price of the product
     Double priceStart;
 
-    //todo: See how to schedule the bid later
-    Calendar calendar;
-    double timer;
+    //When the bid start and how much time stay up
+    int startWhen;
+    int duration;
 
 
     //Méthode pour "clear" l'écran
@@ -65,8 +64,8 @@ public class Bid
         {
             try
             {
-                System.out.print("Start value : ");
-                //this.priceStart = sc.nextDouble(); check to read calendar
+                System.out.print("Waiting time before it start : ");
+                startWhen = sc.nextInt();
                 break;
             }
             
@@ -78,10 +77,24 @@ public class Bid
             }
         }
 
-        this.calendar = calendar;
-        this.timer = timer;
+        //Ending date
+        while(true)
+        {
+            try
+            {
+                System.out.print("How much time does it stay online ? : ");
+                duration = sc.nextInt();
+                break;
+            }
+            
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+                sc.nextLine();
+            }
+        }
     }
-
 
     public Seller getSeller() {
         return seller;
@@ -93,14 +106,6 @@ public class Bid
 
     public Double getPriceStart() {
         return priceStart;
-    }
-
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public double getTimer() {
-        return timer;
     }
 
     public void setSeller(Seller seller) {
@@ -115,19 +120,35 @@ public class Bid
         this.priceStart = priceStart;
     }
 
-    public void setCalendar(Calendar calendar) {
-        this.calendar = calendar;
-    }
-
-    public void setTimer(double timer) {
-        this.timer = timer;
-    }
-
     public Product getProduct() {
         return product;
     }
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+
+
+    public int getStartWhen() {
+        return startWhen;
+    }
+
+
+
+    public void setStartWhen(int startWhen) {
+        this.startWhen = startWhen;
+    }
+
+
+
+    public int getDuration() {
+        return duration;
+    }
+
+
+
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 }

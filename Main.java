@@ -15,6 +15,8 @@ public class Main {
 
     public static void main(String[] args)
     {
+        //Compteur(s)
+        int i;
 
         //Variables associées aux vendeurs
         ArrayList<Seller> listeVendeurs = new ArrayList<Seller>();
@@ -25,11 +27,8 @@ public class Main {
         //Variables associées aux mineurs
         ArrayList<Miner> listeMineurs = new ArrayList<Miner>();
 
-        //Variables associées aux objets (uniquement les produits qui n'appartiennent à personne)
-        ArrayList<Product> listeProduits = new ArrayList<Product>();
-
         //Variables associées aux enchères
-
+        ArrayList<Bid> listeEncheres = new ArrayList<Bid>();
 
         //Scanner
         Scanner sc = new Scanner(System.in);
@@ -46,11 +45,11 @@ public class Main {
 
         while(flag)
         {
-            System.out.println("[1] Ajouter une personne");
-            System.out.println("[2] Créer une enchère");
-            System.out.println("[4] Fin");
+            System.out.println("[1] Add an actor to the simulation");
+            System.out.println("[2] Start simulation");
+            System.out.println("[3] Quit");
             System.out.println("");
-            System.out.print("MON CHOIX : ");
+            System.out.print("CHOICE [1,2,3] : ");
 
             try
             {
@@ -121,15 +120,123 @@ public class Main {
 
                         break;
 
+
+
+
+
                     case 2:
-                        System.out.println("création d'une enchère");
-                        break;
+
+                        //Création de TOUT les threads, ouverture d'un autre terminal
+                        //Qui affiche les transactions
+
+                        do
+                        {
+                            //On commence par créer l'enchère, puis on y associe des acheteurs
+                            System.out.println("Veuillez indiquer le vendeur : ");
+                            System.out.println("");
+                            for(i = 0; i < listeVendeurs.size(); i++)
+                            {
+                                System.out.println("["+i+"] "+listeVendeurs.get(i).getFname()+" "+listeVendeurs.get(i).getLname());
+                            }
+                            System.out.println("");
+                            System.out.print("MON CHOIX : ");
+
+                            try
+                            {
+                                //Reading user input then cleaning screen
+                                choix = sc.nextInt();
+                                clearScreen();
+
+                                //We read if user input is valid
+                                if(choix >= listeVendeurs.size())
+                                {
+                                    System.out.println("No corresponding seller, abort bid creation");
+                                    System.out.println("");
+                                    continue;
+                                }
+
+                                else
+                                {
+                                    //The selected seller (which is valid)
+                                    Seller selectedSeller = listeVendeurs.get(choix);
+
+                                    while(true)
+                                    {
+                                        //Now, we must choose the objet to create a bid on
+                                        System.out.println("Veuillez indiquer le vendeur : ");
+                                        System.out.println("");
+                                        for(i = 0; i < selectedSeller.getMyProducts().size(); i++)
+                                        {
+                                            System.out.println("["+i+"] "+selectedSeller.getMyProducts().get(i).getName()+" : "+selectedSeller.getMyProducts().get(i).getDescription());
+                                        }
+                                        System.out.println("");
+                                        System.out.print("MON CHOIX : ");
+
+                                        try
+                                        {
+                                            //Reading user input then cleaning screen
+                                            choix = sc.nextInt();
+                                            clearScreen();
+
+                                            //We read if user input is valid
+                                            if(choix >= selectedSeller.getMyProducts().size())
+                                            {
+                                                System.out.println("No corresponding product, abort bid creation");
+                                                System.out.println("");
+                                                break;
+                                            }
+
+                                            else
+                                            {
+                                                //We can create the bid
+                                                listeEncheres.add(new Bid(selectedSeller, selectedSeller.getMyProducts().get(choix)));
+                                                break;
+                                            }
+                                        }
+
+                                        catch(java.util.InputMismatchException e)
+                                        {
+                                            clearScreen();
+                                            System.out.println("Format not valid : "+e);
+                                            System.out.println("");
+                                            sc.nextLine(); //Get rid of user wrong input
+                                            break;
+                                        }
+
+                                        catch(IndexOutOfBoundsException ioobe)
+                                        {
+                                            clearScreen();
+                                            System.out.println("Index : "+ioobe);
+                                            System.out.println("");
+                                            sc.nextLine(); //Get rid of user wrong input
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            catch(java.util.InputMismatchException e)
+                            {
+                                clearScreen();
+                                System.out.println("Format not valid : "+e);
+                                System.out.println("");
+                                sc.nextLine(); //Get rid of user wrong input
+                                continue;
+                            }
+
+                            catch(IndexOutOfBoundsException ioobe)
+                            {
+                                clearScreen();
+                                System.out.println("Index : "+ioobe);
+                                System.out.println("");
+                                sc.nextLine(); //Get rid of user wrong input
+                                continue;
+                            }
+
+                            clearScreen();
+                        } while(true); //Boucle "run" (on ne sort jamais)
 
                     case 3:
-                        System.out.println("création d'un objet");
-                        break;
-
-                    case 4:
                         flag = false;
                         break;
 

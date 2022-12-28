@@ -143,4 +143,12 @@ public class Person {
     {
         this.money = money;
     }
+
+    public ArrayList<Product> getMyProducts() {
+        return myProducts;
+    }
+
+    public void setMyProducts(ArrayList<Product> myProducts) {
+        this.myProducts = myProducts;
+    }
 }
