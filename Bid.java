@@ -1,3 +1,6 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 
@@ -15,8 +18,8 @@ public class Bid
     //Starting price of the product
     Double priceStart;
 
-    //When the bid start and how much time stay up
-    int startWhen;
+    //Starting date and duration of the bid
+    Calendar startDate = Calendar.getInstance();//Starts right away, as default
     int duration;
 
 
@@ -29,12 +32,12 @@ public class Bid
         }
     }
 
-
-
     //Take as parameter only the seller and the product which is selling, we decide here
     //When we want to sell it
     public Bid(Seller seller, Product product)
     {
+        //Format of date and time
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         this.seller = seller;
         this.product = product;
 
@@ -64,17 +67,21 @@ public class Bid
         {
             try
             {
-                System.out.print("Waiting time before it start : ");
-                startWhen = sc.nextInt();
-                break;
+                System.out.print("Enter the date and time of start (DD/MM/YYYY HH:MM:SS): ");
+                String date = sc.nextLine();
+                startDate.setTime(format.parse(date));
             }
-            
             catch (InputMismatchException ex)
             {
                 clearScreen();
-                System.out.println("Format not valid : "+ex);
-                sc.nextLine();
+                System.out.println("Invalid format : "+ex.getMessage());
+                continue;
+            }catch (ParseException pe){
+                clearScreen();
+                System.out.println("invalid format : "+pe.getMessage());
+                continue;
             }
+            break;
         }
 
         //Ending date
@@ -128,24 +135,17 @@ public class Bid
         this.product = product;
     }
 
-
-
-    public int getStartWhen() {
-        return startWhen;
+    public Calendar getStartDate() {
+        return startDate;
     }
 
-
-
-    public void setStartWhen(int startWhen) {
-        this.startWhen = startWhen;
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
     }
-
-
 
     public int getDuration() {
         return duration;
     }
-
 
 
     public void setDuration(int duration) {
