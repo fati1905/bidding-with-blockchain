@@ -21,6 +21,9 @@ public class Main {
         //Compteur(s)
         int i;
 
+        //Blocks
+        Block blocs = new Block();
+
         //Variables associées aux vendeurs
         ArrayList<Seller> listeVendeurs = new ArrayList<Seller>();
 
@@ -90,7 +93,7 @@ public class Main {
                                 switch(choix)
                                 {
                                     case 1:
-                                        listeAcheteurs.add(new Buyer());
+                                        listeAcheteurs.add(new Buyer(blocs));
                                         clearScreen();
                                         flag2 = false;
                                         break;
@@ -102,7 +105,7 @@ public class Main {
                                         break;
 
                                     case 3:
-                                        listeMineurs.add(new Miner());
+                                        listeMineurs.add(new Miner(blocs));
                                         clearScreen();
                                         flag2 = false;
                                         break;
@@ -122,7 +125,7 @@ public class Main {
                             catch(java.util.InputMismatchException e)
                             {
                                 clearScreen();
-                                System.out.println("Format not valid : "+e);
+                                System.out.println("Invalid format : "+e);
                                 System.out.println("");
                                 sc.nextLine(); //Get rid of user wrong input
                             }

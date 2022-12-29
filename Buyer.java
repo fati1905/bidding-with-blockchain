@@ -5,13 +5,15 @@ import java.util.ArrayList;
 public class Buyer extends Person implements Runnable
 {
 
-    //Before searching for a new auction, the buyer look for every notification he have
+    //Before searching for a new auction, the buyer look for every notification he has
     ArrayList<Auction> newOffer;
+    Block blocs;
 
-    public Buyer()
+    public Buyer(Block blocs)
     {
        super();
        newOffer = new ArrayList<Auction>();
+       this.blocs = blocs;
     }
 
     @Override
@@ -83,7 +85,10 @@ public class Buyer extends Person implements Runnable
                         if(this.getMoney() > auction.getPriceStart() && (1 + rand.nextInt(100)) < 31)
                         {
                             //We set the offer
-                            auction.setOffer(new Offer(this, auction.getPriceStart() + rand.nextDouble(this.getMoney() - auction.getPriceStart())));
+                            Offer offer = new Offer(this, auction.getPriceStart() + rand.nextDouble(this.getMoney() - auction.getPriceStart()));
+                            auction.setOffer(offer);
+                            //Add the offer to the linked list of transactions
+                            blocs.addOffer(offer);
                         }
                         else
                         {

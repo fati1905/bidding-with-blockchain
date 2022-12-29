@@ -1,8 +1,10 @@
 public class Miner extends Person implements Runnable
 {
-    public Miner()
+    Block blocs;
+    public Miner(Block blocs)
     {
-       super();
+        super();
+        this.blocs = blocs;
     }
 
     @Override
@@ -10,6 +12,7 @@ public class Miner extends Person implements Runnable
     {
         // TODO Auto-generated method stub
         //Wait for event (new offer) --> arraywaitingqueue ? when new offer put the bid in the queue ?
-        
+        blocs.mineBlock();
+
     }
 }
