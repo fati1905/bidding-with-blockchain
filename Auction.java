@@ -1,5 +1,6 @@
-import java.util.Random;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Auction implements Runnable
 {
@@ -16,8 +17,8 @@ public class Auction implements Runnable
     Double priceStart;
 
     //When the auction start and how much time stay up
-    int startWhen;
-    int duration;
+    Calendar startWhen = Calendar.getInstance();
+    int duration;//todo : How does it stop
 
     //List of observer
     ArrayList<Buyer> interestedBuyers = new ArrayList<Buyer>();
@@ -43,11 +44,71 @@ public class Auction implements Runnable
         this.seller = seller;
         this.product = product;
         this.offer = null; //No offer when we start
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss"); //Le format de la date
 
         //Now we randomize starting price, duration and how much time we wait before we start the auction
-        startWhen = 3 + rand.nextInt(7); //Wait between 3 and 10 seconds before it goes online
+        /*startWhen = 3 + rand.nextInt(7); //Wait between 3 and 10 seconds before it goes online
         duration = 15 + rand.nextInt(15); //Wait between 15 and 30 seconds before it ends
         priceStart = 10 + rand.nextDouble(90); //Start between 10 and 100 unit of money
+        */
+
+        Scanner sc = new Scanner(System.in);
+
+        //Starting value
+        while(true)
+        {
+            try
+            {
+                System.out.print("Start value : ");
+                this.priceStart = sc.nextDouble();
+                break;
+            }
+
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex.getMessage());
+            }
+        }
+
+        //Starting date
+        while(true)
+        {
+            try
+            {
+                System.out.print("Enter the date and time of start (DD/MM/YYYY HH:MM:SS): ");
+                String date = sc.nextLine();
+                startWhen.setTime(format.parse(date));
+            }
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Invalid format : "+ex.getMessage());
+                continue;
+            }catch (ParseException pe){
+                clearScreen();
+                System.out.println("invalid format : "+pe.getMessage());
+                continue;
+            }
+            break;
+        }
+
+        //Ending date
+        while(true)
+        {
+            try
+            {
+                System.out.print("How much time does it stay online ? : ");
+                duration = sc.nextInt();
+                break;
+            }
+
+            catch (InputMismatchException ex)
+            {
+                clearScreen();
+                System.out.println("Format not valid : "+ex);
+            }
+        }
     }
 
     public Seller getSeller() {
@@ -82,19 +143,13 @@ public class Auction implements Runnable
         this.product = product;
     }
 
-
-
-    public int getStartWhen() {
+    public Calendar getStartWhen() {
         return startWhen;
     }
 
-
-
-    public void setStartWhen(int startWhen) {
+    public void setStartWhen(Calendar startWhen) {
         this.startWhen = startWhen;
     }
-
-
 
     public int getDuration() {
         return duration;
@@ -114,7 +169,10 @@ public class Auction implements Runnable
         //We first wait to start the auction
         try
         {
-            Thread.sleep(startWhen*1000);
+            Calendar instantTime = Calendar.getInstance();
+            long now = instantTime.getTimeInMillis();
+            long debut = this.startWhen.getTimeInMillis();
+            Thread.sleep((long)debut-now);
         }
 
         catch (Exception e)
@@ -122,21 +180,21 @@ public class Auction implements Runnable
             System.out.println("An error occured while waiting...");
         }
         
-        //Once the waiting time is over, we had ourself to the auction list
+        //Once the waiting time is over, we had ourselves to the auction list
         Main.getListeEncheres().add(this);
 
         //Now, we wait for the duration
         try
         {
-            Thread.sleep(duration*1000);
+            Thread.sleep((long)duration*1000);
         }
 
         catch (Exception e)
         {
-            System.out.println("An error occured while waiting...");
+            System.out.println("An error occurred while waiting...");
         }
 
-        //The auction as ended, we add the product to the buyer, remove it form the seller inventory and transfer the money from the buyer to the seller
+        //The auction has ended, we add the product to the buyer, remove it form the seller inventory and transfer the money from the buyer to the seller
         synchronized(this)
         {
             if(this.getOffer() != null)

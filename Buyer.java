@@ -37,11 +37,11 @@ public class Buyer extends Person implements Runnable
 
                     synchronized(auction)
                     {
-                        //See if he have the money, etc... but only 20% of making a counter offer
+                        //See if he has the money, etc... but only 20% of making a counter offer
                         if(this.getMoney() > auction.getOffer().getPrixProp() && (1 + rand.nextInt(100)) < 21 && auction.getOffer().getBuyer() != this) //ne doit pas être celui qui a déjà l'offre
                         {
                             //We first have to refund the owner of the current offer
-                            aBuyer = auction.getOffer().getBuyer();
+                            aBuyer = auction.getOffer().getBuyer();//todo : Il ne doit pas y avoir de rembouresement, celui qui fait le dernier offre qui achète réelement le produit
                             aBuyer.setMoney(aBuyer.getMoney() + auction.getOffer().getPrixProp());
 
                             //We replace the current offer by a random offer
